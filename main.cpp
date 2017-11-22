@@ -15,8 +15,8 @@ std::ostream & operator<<(std::ostream &os, const Normal &vn){
     return os;
 }
 std::ostream & operator<<(std::ostream &os, const Texture &vt){
-    os << "Texture coordinates: " << vt.vt[0] << " " << vt.vt[1];
-    if(vt.dim == 3) os << " " << vt.vt[2];
+    os << "Texture coordinates: " << vt.t[0] << " " << vt.t[1];
+    if(vt.dim == 3) os << " " << vt.t[2];
     return os;
 }
 std::ostream & operator<<(std::ostream &os, const Face &f){
@@ -49,6 +49,34 @@ Vertex parse_vertex(std::vector<std::string> tokens){
     return vertex;
 }
 
+Normal parse_normal(std::vector<std::string> tokens){ //todo: too similar to parse_vertex, remove reuse
+    assert(tokens.size() == 3);
+    Normal normal;
+    int i = 0;
+    float value = 0;
+    for(auto s : tokens){
+        value = std::stof(s);  //should catch std::invalid_argument...
+        normal.n[i] = value;
+        i++;
+    }
+
+    return normal;
+}
+
+Texture parse_texture(std::vector<std::string> tokens){ //todo: also very similar to the other parsing functions
+    assert(tokens.size() == 2 || tokens.size() == 3);
+    Texture tex;
+    int i = 0;
+    float value = 0;
+    for(auto s : tokens){
+        value = std::stof(s);  //should catch std::invalid_argument...
+        tex.t[i] = value;
+        i++;
+    }
+    tex.dim = i;
+    return tex;
+}
+
 void parse_line(std::string line, Object *object)
 {
     if(line.length() == 0)
@@ -65,9 +93,13 @@ void parse_line(std::string line, Object *object)
         object->vertices.push_back(v);
         std::cout << "Added: " << v << std::endl;
     }else if(tokens[0].compare("vn") == 0){ //normal
-
+        Normal n = parse_normal( {tokens.begin()+1, tokens.end()} );
+        object->normals.push_back(n);
+        std::cout << "Added: " << n << std::endl;
     }else if(tokens[0].compare("vt") == 0){ //texture
-
+        Texture t = parse_texture( {tokens.begin()+1, tokens.end()} );
+        object->texture_coords.push_back(t);
+        std::cout << "Added: " << t << std::endl;
     }else if(tokens[0].compare("f") == 0){ //face
 
     }
