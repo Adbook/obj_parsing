@@ -77,6 +77,28 @@ Texture parse_texture(std::vector<std::string> tokens){ //todo: also very simila
     return tex;
 }
 
+Face parse_face(std::vector<std::string> tokens){
+    assert(tokens.size() <= MAX_FACE_SIZE);
+    Face f;
+    int i = 0;
+    for(auto s : tokens){
+        std::vector<std::string> indexes = split(s, "\\/");
+
+        int j = 0;
+        int values[3];
+        for(auto index : indexes){
+            if(index.compare("") != 0)
+                values[j] = std::stoi(index);
+            else values[j] = -1;
+            j++;
+        }
+        f.v[i] = values[0]; f.vt[i] = values[1]; f.vn[i] = values[2];
+        i++;
+    }
+    f.nb = i;
+    return f;
+}
+
 void parse_line(std::string line, Object *object)
 {
     if(line.length() == 0)
@@ -101,7 +123,9 @@ void parse_line(std::string line, Object *object)
         object->texture_coords.push_back(t);
         std::cout << "Added: " << t << std::endl;
     }else if(tokens[0].compare("f") == 0){ //face
-
+        Face f = parse_face( {tokens.begin()+1, tokens.end()} );
+        object->faces.push_back(f);
+        std::cout << "Added: " << f << std::endl;
     }
     else std::cerr << "unsupported keyword: " << tokens[0] << std::endl;
 
