@@ -113,19 +113,15 @@ void parse_line(std::string line, Object *object)
     if(tokens[0].compare("v") == 0) { //vertex
         Vertex v = parse_vertex( {tokens.begin()+1, tokens.end()} );
         object->vertices.push_back(v);
-        std::cout << "Added: " << v << std::endl;
     }else if(tokens[0].compare("vn") == 0){ //normal
         Normal n = parse_normal( {tokens.begin()+1, tokens.end()} );
         object->normals.push_back(n);
-        std::cout << "Added: " << n << std::endl;
     }else if(tokens[0].compare("vt") == 0){ //texture
         Texture t = parse_texture( {tokens.begin()+1, tokens.end()} );
         object->texture_coords.push_back(t);
-        std::cout << "Added: " << t << std::endl;
     }else if(tokens[0].compare("f") == 0){ //face
         Face f = parse_face( {tokens.begin()+1, tokens.end()} );
         object->faces.push_back(f);
-        std::cout << "Added: " << f << std::endl;
     }
     else std::cerr << "unsupported keyword: " << tokens[0] << std::endl;
 
