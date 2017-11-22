@@ -35,16 +35,45 @@ std::vector<std::string> split(const std::string& input, const std::string& rege
     return {first, last};
 }
 
+void parse_line(std::string line, Object *object)
+{
+    if(line.length() == 0)
+        return;
+
+    std::vector<std::string> tokens = split(line, "\\s+");  //\s is whitespace
+
+
+    if(tokens[0][0] == '#') //comment
+        return;
+
+    if(tokens[0].compare("v") == 0) { //vertex
+
+    }else if(tokens[0].compare("vn") == 0){ //normal
+
+    }else if(tokens[0].compare("vt") == 0){ //texture
+
+    }else if(tokens[0].compare("f") == 0){ //face
+
+    }
+    else std::cerr << "unsupported keyword: " << tokens[0] << std::endl;
+
+}
 
 int main(int argc, char ** argv){
     std::string line;
     std::ifstream is;
     is.open(OBJ_FILENAME);
 
+    Object object;
+
     if(!is.is_open()){
         std::cerr << "Failed to open file: " << OBJ_FILENAME << std::endl;
         return 1;
     }
-    
+
+    while(std::getline(is, line)){
+        parse_line(line, &object);
+    }
+
     return 0;
 }
