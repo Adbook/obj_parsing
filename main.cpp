@@ -2,7 +2,7 @@
 #include <iostream>
 #include <regex>
 #include <fstream>
-
+#include <cassert>
 
 #define OBJ_FILENAME "peach.obj"
 
@@ -35,6 +35,20 @@ std::vector<std::string> split(const std::string& input, const std::string& rege
     return {first, last};
 }
 
+Vertex parse_vertex(std::vector<std::string> tokens){
+    assert(tokens.size() == 3);
+    Vertex vertex;
+    int i = 0;
+    float value = 0;
+    for(auto s : tokens){
+        value = std::stof(s);  //should eventually catch std::invalid_argument...
+        vertex.v[i] = value;
+        i++;
+    }
+
+    return vertex;
+}
+
 void parse_line(std::string line, Object *object)
 {
     if(line.length() == 0)
@@ -47,7 +61,9 @@ void parse_line(std::string line, Object *object)
         return;
 
     if(tokens[0].compare("v") == 0) { //vertex
-
+        Vertex v = parse_vertex( {tokens.begin()+1, tokens.end()} );
+        object->vertices.push_back(v);
+        std::cout << "Added: " << v << std::endl;
     }else if(tokens[0].compare("vn") == 0){ //normal
 
     }else if(tokens[0].compare("vt") == 0){ //texture
