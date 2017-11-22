@@ -1,6 +1,10 @@
 #include "struct.h"
 #include <iostream>
 #include <regex>
+#include <fstream>
+
+
+#define OBJ_FILENAME "peach.obj"
 
 std::ostream & operator<<(std::ostream &os, const Vertex &v){
     os << "Vertex: " << v.v[0] << " " << v.v[1] << " " << v.v[2];
@@ -33,6 +37,14 @@ std::vector<std::string> split(const std::string& input, const std::string& rege
 
 
 int main(int argc, char ** argv){
+    std::string line;
+    std::ifstream is;
+    is.open(OBJ_FILENAME);
 
+    if(!is.is_open()){
+        std::cerr << "Failed to open file: " << OBJ_FILENAME << std::endl;
+        return 1;
+    }
+    
     return 0;
 }
