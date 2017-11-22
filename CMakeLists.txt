@@ -3,5 +3,5 @@ project(obj_parsing)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp struct.h)
 add_executable(obj_parsing ${SOURCE_FILES})
