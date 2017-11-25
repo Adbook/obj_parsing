@@ -2,6 +2,7 @@
 #define OBJ_PARSING_STRUCT_H
 
 #include <vector>
+#include <string>
 
 #define MAX_FACE_SIZE 5
 
@@ -15,7 +16,7 @@ typedef struct Normal{
 
 typedef struct Texture{
     int dim;
-    float vt[3];
+    float t[3];
 }Texture;
 
 typedef struct Face{ //only contains indices to match with the other object data
@@ -30,6 +31,7 @@ typedef struct Object{
     std::vector<Texture> texture_coords;
     std::vector<Normal> normals;
     std::vector<Face> faces;
+    std::string name;
 }Object;
 
 #endif //OBJ_PARSING_STRUCT_H
